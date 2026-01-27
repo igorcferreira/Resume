@@ -15,7 +15,6 @@ Além de escrever código, cresci para um papel de Platform Leader: mentorando d
 - Cargo: Desenvolvedor Mobile Sênior & Platform Leader
 - Localização: Londres, Inglaterra, Reino Unido
 - Início: Setembro de 2015
-- Término: Março de 2026
 
 Na Future Workshops eu cresci de Desenvolvedor Mobile Sênior para Platform Leader. Desenvolvo apps iOS com Swift e SwiftUI, e apps Android com Kotlin e Jetpack Compose, atendendo startups e empresas estabelecidas ao redor do mundo. Desenvolvimento server-side com Kotlin e Spring Framework também faz parte do meu conjunto de ferramentas, o que me permite entregar funcionalidades de ponta a ponta quando necessário.
 
