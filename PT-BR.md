@@ -10,9 +10,17 @@ Além de escrever código, cresci para um papel de Platform Leader: mentorando d
 
 ## Experiência
 
+### Trainline
+
+- Cargo: Engenheiro iOS Sênior
+- Localização: Barcelona, Espanha
+- Início: Maio de 2026
+
+A missão da Trainline é tornar viagens de trem pela Europa mais fáceis e acessíveis, com o app mobile como principal canal para usuários encontrarem e reservarem as melhores passagens. Como Engenheiro iOS Sênior, desenvolvo novas funcionalidades com foco em entregar uma experiência fluida que se integre bem com a plataforma da Apple e esteja alinhada com a identidade da marca. Mantenho alta qualidade de código através de testes unitários, testes de integração e testes de snapshot, e invisto em documentação clara que apoia a integração de novos desenvolvedores e impulsiona conversas sobre melhorias no processo de desenvolvimento. Também contribuo na criação de ferramentas de automação e agentes de IA que ajudam o time a entregar funcionalidades mais rapidamente.
+
 ### Future Workshops
 
-- Cargo: Desenvolvedor Mobile Sênior & Platform Leader
+- Cargo: Staff Software Engineer
 - Localização: Londres, Inglaterra, Reino Unido
 - Início: Setembro de 2015
 - Término: Março de 2026
@@ -25,7 +33,7 @@ Como Platform Leader, guio decisões técnicas em iOS e Android, mentoro desenvo
 
 ### App Rail
 
-- Cargo: Desenvolvedor Mobile Sênior & Platform Lead
+- Cargo: Staff Software Engineer
 - Localização: Remoto
 - Início: Janeiro de 2022
 - Término: Julho de 2025
