@@ -3,7 +3,7 @@ name = "resume-pdf"
 version = "1.0.0"
 requires-python = ">=3.10"
 dependencies = [
-    "weasyprint>=68",
     "markdown>=3.10",
     "pillow>=12",
+    "pymupdf>=1.28,<2",
 ]

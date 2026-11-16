@@ -3,19 +3,12 @@
 import os
 import re
 import shutil
-import subprocess
 import tempfile
+from urllib.parse import unquote
 
-# WeasyPrint needs Homebrew's pango/glib shared libraries
-_brew_prefix = subprocess.run(
-    ["brew", "--prefix"], capture_output=True, text=True
-).stdout.strip()
-if _brew_prefix:
-    os.environ.setdefault("DYLD_FALLBACK_LIBRARY_PATH", f"{_brew_prefix}/lib")
-
-import markdown  # noqa: E402
-from PIL import Image  # noqa: E402
-from weasyprint import HTML  # noqa: E402
+import markdown
+import pymupdf
+from PIL import Image
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -24,13 +17,17 @@ PAGE_WIDTH_MM = 210
 MARGIN_V_MM = 20
 MARGIN_H_MM = 18
 
+PT_PER_MM = 72 / 25.4
+MAX_IMAGE_HEIGHT_PT = 210  # 280px at 96 dpi
+# Tall enough to hold the whole CV in one layout pass
+MEASURE_HEIGHT_PT = 100_000
+
 BODY_CSS = """
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 10pt;
     line-height: 1.5;
     color: #1a1a1a;
-    max-width: 174mm;
 }
 h1 {
     font-size: 22pt;
@@ -65,22 +62,10 @@ table { width: 100%; border-collapse: collapse; margin: 12px 0; }
 th, td { text-align: center; padding: 6px; vertical-align: top; }
 th { font-weight: 600; font-size: 9pt; color: #555; }
 img {
-    max-width: 100%;
-    height: auto;
-    max-height: 280px;
-    border-radius: 4px;
     display: block;
     margin: 0 auto;
 }
 """
-
-
-def page_css(height_mm: float) -> str:
-    return (
-        f"@page {{ size: {PAGE_WIDTH_MM}mm {height_mm}mm; "
-        f"margin: {MARGIN_V_MM}mm {MARGIN_H_MM}mm; }}\n"
-        + BODY_CSS
-    )
 
 
 def optimize_images(tmp_dir: str) -> None:
@@ -105,11 +90,68 @@ def optimize_images(tmp_dir: str) -> None:
                 pass
 
 
-def build_html(html_body: str, css: str) -> str:
+def size_images(html_body: str, assets_dir: str) -> str:
+    """Give every <img> an explicit size, since MuPDF ignores max-width/max-height."""
+    content_width = (PAGE_WIDTH_MM - 2 * MARGIN_H_MM) * PT_PER_MM
+
+    def replace(match: re.Match) -> str:
+        tag = match.group(0)
+        src_match = re.search(r'src="([^"]+)"', tag)
+        if not src_match:
+            return tag
+        # MuPDF resolves image paths literally, so decode "%20" and friends
+        src = unquote(src_match.group(1))
+        tag = tag.replace(src_match.group(0), f'src="{src}"')
+        try:
+            with Image.open(os.path.join(assets_dir, src)) as img:
+                aspect = img.width / img.height
+        except OSError:
+            return tag
+        height = MAX_IMAGE_HEIGHT_PT
+        width = height * aspect
+        if width > content_width:
+            width, height = content_width, content_width / aspect
+        return tag.replace("<img", f'<img style="width:{width:.1f}pt;height:{height:.1f}pt"', 1)
+
+    return re.sub(r"<img\b[^>]*>", replace, html_body)
+
+
+def build_html(html_body: str, assets_dir: str) -> str:
+    html_body = size_images(html_body, assets_dir)
     return (
-        "<!DOCTYPE html><html><head><meta charset='utf-8'>"
-        f"<style>{css}</style></head><body>{html_body}</body></html>"
+        "<!DOCTYPE html><html><head><meta charset='utf-8'></head>"
+        f"<body>{html_body}</body></html>"
     )
+
+
+def render_pdf(html: str, assets_dir: str, pdf_path: str) -> None:
+    """Lay the HTML out on a single A4-wide page whose height fits the content."""
+    archive = pymupdf.Archive(assets_dir)
+    content_width = (PAGE_WIDTH_MM - 2 * MARGIN_H_MM) * PT_PER_MM
+    margin_h = MARGIN_H_MM * PT_PER_MM
+    margin_v = MARGIN_V_MM * PT_PER_MM
+
+    # Pass 1: lay out into an oversized area to measure the content height
+    story = pymupdf.Story(html=html, user_css=BODY_CSS, archive=archive)
+    more, filled = story.place(pymupdf.Rect(0, 0, content_width, MEASURE_HEIGHT_PT))
+    if more:
+        raise RuntimeError("Content taller than the measuring area")
+    content_height = pymupdf.Rect(filled).y1
+
+    # Pass 2: draw onto a page with the exact height
+    page_rect = pymupdf.Rect(
+        0, 0, PAGE_WIDTH_MM * PT_PER_MM, content_height + 2 * margin_v
+    )
+    where = pymupdf.Rect(
+        margin_h, margin_v, margin_h + content_width, margin_v + content_height + 1
+    )
+    story = pymupdf.Story(html=html, user_css=BODY_CSS, archive=archive)
+    writer = pymupdf.DocumentWriter(pdf_path)
+    device = writer.begin_page(page_rect)
+    story.place(where)
+    story.draw(device)
+    writer.end_page()
+    writer.close()
 
 
 def convert(md_path: str, pdf_path: str) -> None:
@@ -127,21 +169,7 @@ def convert(md_path: str, pdf_path: str) -> None:
         md_text = re.sub(r"\.jpeg\)", ".jpg)", md_text)
 
         html_body = markdown.markdown(md_text, extensions=["tables", "smarty"])
-
-        # Pass 1: render with an oversized page to measure actual content height
-        tall_css = page_css(9999)
-        doc = HTML(string=build_html(html_body, tall_css), base_url=tmp_dir)
-        rendered = doc.render()
-        page = rendered.pages[0]
-        content_block = page._page_box.children[0]
-        content_bottom_px = content_block.position_y + content_block.margin_height()
-        content_height_mm = (content_bottom_px / 96) * 25.4 + MARGIN_V_MM
-
-        # Pass 2: render with the exact page height
-        fitted_css = page_css(content_height_mm)
-        HTML(
-            string=build_html(html_body, fitted_css), base_url=tmp_dir
-        ).write_pdf(pdf_path)
+        render_pdf(build_html(html_body, tmp_dir), tmp_dir, pdf_path)
         print(f"Created {pdf_path}")
     finally:
         shutil.rmtree(tmp_dir)
