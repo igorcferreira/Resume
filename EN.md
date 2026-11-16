@@ -10,14 +10,6 @@ Beyond writing code, I've grown into a Platform Leader role: mentoring developer
 
 ## Experience
 
-### Trainline
-
-- Role: Senior iOS Engineer
-- Location: Barcelona, Spain
-- Start: May 2026
-
-Trainline's mission is to make train travel across Europe easier and more accessible, with the mobile app as the primary channel for users to find and book the best tickets. As a Senior iOS Engineer, I develop new features with a focus on delivering a seamless experience that integrates well with Apple's platform and aligns with the company's brand identity. I maintain high code quality through unit tests, integration tests, and snapshot tests, and invest in clear documentation that supports onboarding new developers and drives conversations around improving the development process. I also contribute to building automation tools and AI agents that help the team deliver features faster.
-
 ### Future Workshops
 
 - Role: Staff Software Engineer
