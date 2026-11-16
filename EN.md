@@ -29,20 +29,9 @@ At Future Workshops I've grown from Senior Mobile Developer into a Platform Lead
 
 A highlight of my work here has been integrating AI capabilities into mobile apps (chatbots, LLM-powered data processing, and image recognition), bringing intelligent features that improve user experiences.
 
+Another highlight is the "App Rail" project, a SDK which connects to a remote server to power a "no-code" app development approach. Through the App Rail portal, users design app flows using visual UI blocks, and our native SDK brings those designs to life with server-driven features. This approach makes app development more accessible to non-developers.
+
 As Platform Leader, I guide technical decisions across iOS and Android, mentor developers at various levels, and help shape how our teams approach mobile architecture. I run code reviews, lead technical discussions, and work to create an environment where developers can grow while delivering their best work. Seeing teammates advance their skills and take on bigger challenges is one of the most rewarding aspects of the role.
-
-### App Rail
-
-- Role: Staff Software Engineer
-- Location: Remote
-- Start: January 2022
-- End: July 2025
-
-At App Rail, I worked as both architect and developer. I helped design the architecture for native SDKs on both iOS (Swift) and Android (Kotlin), then built them. The iOS SDK leverages SwiftUI for modern UI components, while the Android SDK uses Jetpack Compose, ensuring both feel native and performant.
-
-The SDK connects to a remote server to power a "no-code" app development approach. Through the App Rail portal, users design app flows using visual UI blocks, and our native SDK brings those designs to life with server-driven features. This approach makes app development more accessible to non-developers.
-
-As Platform Lead, I guided technical decisions across both mobile platforms, ensured consistency in how we approached problems, and mentored team members on best practices. My focus was making sure the SDK was easy to integrate and use.
 
 ### 99 Táxis
 

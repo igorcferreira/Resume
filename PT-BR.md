@@ -29,20 +29,9 @@ Na Future Workshops eu cresci de Desenvolvedor Mobile Sênior para Platform Lead
 
 Um destaque do meu trabalho aqui tem sido integrar capacidades de IA em apps mobile (chatbots, processamento de dados com LLM e reconhecimento de imagem), trazendo funcionalidades inteligentes que melhoram a experiência dos usuários.
 
+Outro destaque foi o projeto "App Rail", uma SDK que conecta-se a um servidor remoto para viabilizar uma abordagem "no-code" de desenvolvimento de apps. Através do portal App Rail, usuários desenham fluxos de aplicativos usando blocos visuais de UI, e nosso SDK nativo dá vida a esses designs com funcionalidades orientadas pelo servidor. Esta abordagem torna o desenvolvimento de apps mais acessível para não-desenvolvedores.
+
 Como Platform Leader, guio decisões técnicas em iOS e Android, mentoro desenvolvedores de diversos níveis e ajudo a moldar como nossas equipes abordam arquitetura mobile. Conduzo code reviews, lidero discussões técnicas e trabalho para criar um ambiente onde desenvolvedores possam crescer enquanto entregam seu melhor trabalho. Ver colegas avançarem suas habilidades e assumirem desafios maiores é um dos aspectos mais gratificantes do papel.
-
-### App Rail
-
-- Cargo: Staff Software Engineer
-- Localização: Remoto
-- Início: Janeiro de 2022
-- Término: Julho de 2025
-
-Na App Rail, desempenhei dois papéis: arquiteto e desenvolvedor. Ajudei a projetar a arquitetura de SDKs nativos para iOS (Swift) e Android (Kotlin), e depois os construí. O SDK iOS utiliza SwiftUI para componentes de UI modernos, enquanto o SDK Android usa Jetpack Compose, garantindo que ambos pareçam nativos e performáticos.
-
-O SDK conecta-se a um servidor remoto para viabilizar uma abordagem "no-code" de desenvolvimento de apps. Através do portal App Rail, usuários desenham fluxos de aplicativos usando blocos visuais de UI, e nosso SDK nativo dá vida a esses designs com funcionalidades orientadas pelo servidor. Esta abordagem torna o desenvolvimento de apps mais acessível para não-desenvolvedores.
-
-Como Platform Lead, guiei decisões técnicas em ambas as plataformas mobile, garantindo consistência na forma como abordávamos problemas, e mentorei membros da equipe em boas práticas. Meu foco era garantir que o SDK fosse fácil de integrar e usar.
 
 ### 99 Táxis
 
